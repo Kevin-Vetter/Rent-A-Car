@@ -2,7 +2,6 @@
 using RentACar.Service.Repository;
 using RentACar.Service.Interface;
 using System;
-using System.Threading;
 
 namespace RentACar;
 
@@ -45,7 +44,9 @@ public class Program
                 rentACar.irepository.RentCar();
                 break;
             case ConsoleKey.D3:
-                rentACar.irepository.CreateCustomer(ValidateName(),ValidateAge());
+                var idk = rentACar.irepository.CreateCustomer(ValidateName(),ValidateAge());
+                
+                Console.WriteLine(idk);
                 break;
             case ConsoleKey.D4:
                 Environment.Exit(0);
