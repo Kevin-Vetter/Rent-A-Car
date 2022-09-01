@@ -39,14 +39,19 @@ public class Program
         switch (Console.ReadKey(true).Key)
         {
             case ConsoleKey.D1:
+
                 break;
             case ConsoleKey.D2:
                 rentACar.irepository.RentCar();
                 break;
             case ConsoleKey.D3:
-                var idk = rentACar.irepository.CreateCustomer(ValidateName(),ValidateAge());
-                
-                Console.WriteLine(idk);
+                var customer = rentACar.irepository.CreateCustomer(ValidateName(), ValidateAge());
+
+                Console.WriteLine($"New customer has been created\n" +
+                    $"Name: {customer.Name}\n" +
+                    $"Age: {customer.Age}\n" +
+                    $"Id: {customer.Id}");
+                Continue();
                 break;
             case ConsoleKey.D4:
                 Environment.Exit(0);
@@ -58,6 +63,7 @@ public class Program
                 break;
         }
     }
+
     #endregion
 
     #region Validation stuff
@@ -91,6 +97,11 @@ public class Program
         }
         
         return age;
+    }
+    static void Continue()
+    {
+        Console.WriteLine("\nPress any key to continue");
+        Console.ReadKey();
     }
     #endregion
 }

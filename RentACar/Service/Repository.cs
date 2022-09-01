@@ -5,7 +5,9 @@ using System.Collections.Generic;
 namespace RentACar.Service.Repository;
 public class Repository : IRepository
 {
-    #region Car methods
+    #region Car 
+    private List<Car> _cars = new();
+
     public void RentCar()
     {
 
@@ -30,13 +32,13 @@ public class Repository : IRepository
 
     #region Customer
 
-    readonly List<Customer> customers = new();
+    private List<Customer> _customers = new();
 
     public Customer CreateCustomer(string name, int age)
     {
-        Customer customer = new(name, customers.Count + 1, age);
+        Customer customer = new(name, _customers.Count + 1, age);
 
-        customers.Add(customer);
+        _customers.Add(customer);
 
         return customer;
     }
