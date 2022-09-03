@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using RentACar.Service.Repository;
 using RentACar.Service.Interface;
+using System.Collections.Generic;
 using System;
 
 namespace RentACar;
@@ -10,6 +11,8 @@ public class Program
     static void Main()
     {
         Menu();
+        Console.Clear();
+        Main();
     }
 
     #region Menu stuff
@@ -29,8 +32,9 @@ public class Program
         Console.WriteLine("###Welcome to Rent A Car - Car rental service###\n" +
             "1. Rent car \n" +
             "2. Return car \n" +
-            "3. New Customer \n" +
-            "4. Exit \n");
+            "3. New car \n" +
+            "4. New Customer \n" +
+            "5. Exit \n");
         OptionHandler(rentACar);
     }
 
@@ -39,12 +43,45 @@ public class Program
         switch (Console.ReadKey(true).Key)
         {
             case ConsoleKey.D1:
-
+                Console.WriteLine("Choose car:");
+                List<string[]> carStrings = rentACar.irepository.GetAllCars();
+                foreach (string[] s in carStrings)
+                {
+                    Console.Write(s[0] + ".\t");
+                    Console.Write(s[1] + "\t");
+                    Console.Write(s[2] + "\t");
+                    Console.Write(s[3] + "\t");
+                    Console.Write("$" + s[4] + "\t");
+                    Console.Write("KM: " + s[5] + "\t");
+                    Console.Write("In store: " + s[6] + "\n");
+                }
+                int id;
+                Console.WriteLine();
+                while (true)
+                {
+                    if (int.TryParse(Console.ReadLine(), out id))
+                    {
+                        break;
+                    }
+                    Console.SetCursorPosition(0, Console.GetCursorPosition().Top-1);
+                    Console.Write("".PadRight(Console.WindowWidth));
+                    Console.SetCursorPosition(0, Console.GetCursorPosition().Top);
+                }
+                rentACar.irepository.RentCar(id);
+                Continue();
                 break;
             case ConsoleKey.D2:
-                rentACar.irepository.RentCar();
+                throw new NotImplementedException();
+
                 break;
             case ConsoleKey.D3:
+                Console.Clear();
+                string[] carTraits = CarTraitsValidation();
+                rentACar.irepository.CreateNewCar(carTraits[0], carTraits[1], carTraits[2], carTraits[3], carTraits[4], Convert.ToBoolean(carTraits[5]));
+                break;
+            case ConsoleKey.D4:
+                Console.Clear();
+
                 var customer = rentACar.irepository.CreateCustomer(ValidateName(), ValidateAge());
 
                 Console.WriteLine($"New customer has been created\n" +
@@ -53,7 +90,7 @@ public class Program
                     $"Id: {customer.Id}");
                 Continue();
                 break;
-            case ConsoleKey.D4:
+            case ConsoleKey.D5:
                 Environment.Exit(0);
                 break;
 
@@ -64,9 +101,110 @@ public class Program
         }
     }
 
+
     #endregion
 
     #region Validation stuff
+
+    //static int IntValidation()
+    //{
+
+    //}
+    static string[] CarTraitsValidation()
+    {
+        string brand = string.Empty;
+        string model = string.Empty;
+        string color = string.Empty;
+        string price = string.Empty;
+        string home = string.Empty;
+        string km = string.Empty;
+
+        bool satisfied = false;
+        while (!satisfied)
+        {
+            Console.Write("Brand: ");
+            brand = Console.ReadLine();
+            Console.Write("Model: ");
+            model = Console.ReadLine();
+            Console.Write("Color: ");
+            color = Console.ReadLine();
+
+
+            Console.Write("Price: $");
+            while (true)
+            {
+                if (int.TryParse(Console.ReadLine(), out int result))
+                {
+                    price = result.ToString();
+                    break;
+                }
+                Console.SetCursorPosition(0, 3);
+                Console.Write("Price: $".PadRight(Console.WindowWidth));
+                Console.SetCursorPosition(8, 3);
+            }
+
+            Console.Write("Kilometers: ");
+            while (true)
+            {
+                if (int.TryParse(Console.ReadLine(), out int kilometers) && kilometers < 200000)
+                {
+                    km = kilometers.ToString();
+                    break;
+                }
+                Console.SetCursorPosition(0, 4);
+                Console.Write("Kilometers: ".PadRight(Console.WindowWidth));
+                Console.SetCursorPosition(12, 4);
+            }
+
+
+            Console.Write("In store: ");
+            while (true)
+            {
+                home = Console.ReadLine().Trim();
+                if (!string.IsNullOrEmpty(home) && home.ToLower() == "true")
+                {
+                    home = "true";
+                    break;
+                }
+                else if (home.ToLower() == "false")
+                {
+                    home = "false";
+                    break;
+                }
+                else
+                {
+                    Console.SetCursorPosition(0, 5);
+                    Console.Write("In store: ".PadRight(Console.WindowWidth));
+                    Console.SetCursorPosition(10, 5);
+                }
+            }
+
+            Console.WriteLine($"\n\nDo you wish to create car: " +
+                $"{brand} - " +
+                $"{model} - " +
+                $"{color}, " +
+                $"{km}km, " +
+                $"${price}" +
+                $"\nIn store: {home}?");
+
+            Console.WriteLine("Y/N");
+            while (!satisfied)
+            {
+                if (Console.ReadKey(true).Key == ConsoleKey.Y)
+                {
+                    satisfied = true;
+                }
+                else if (Console.ReadKey(true).Key == ConsoleKey.N)
+                {
+                    Console.Clear();
+                    break;
+                }
+            }
+        }
+
+
+        return new string[] { brand, model, color, km, price, home };
+    }
     static string ValidateName()
     {
         bool trueName = false;
@@ -90,12 +228,12 @@ public class Program
         while (!CorrectInt)
         {
             Console.WriteLine("Type your age: ");
-         CorrectInt = int.TryParse(Console.ReadLine(), out age);
+            CorrectInt = int.TryParse(Console.ReadLine(), out age);
             if (age < 18)
                 CorrectInt = false;
             Console.Clear();
         }
-        
+
         return age;
     }
     static void Continue()
