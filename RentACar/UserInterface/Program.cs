@@ -42,6 +42,7 @@ public class Program
     {
         switch (Console.ReadKey(true).Key)
         {
+            #region Rent car
             case ConsoleKey.D1:
                 Console.WriteLine("Choose car:");
                 List<string[]> carStrings = rentACar.irepository.GetAllCars();
@@ -59,26 +60,36 @@ public class Program
                 Console.WriteLine();
                 while (true)
                 {
+                    Console.Write("Id: ");
+                    //TODO: Do some home check, else reserve!
                     if (int.TryParse(Console.ReadLine(), out id))
                     {
                         break;
                     }
-                    Console.SetCursorPosition(0, Console.GetCursorPosition().Top-1);
+                    Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
                     Console.Write("".PadRight(Console.WindowWidth));
                     Console.SetCursorPosition(0, Console.GetCursorPosition().Top);
                 }
                 rentACar.irepository.RentCar(id);
                 Continue();
                 break;
+            #endregion
+
+            #region Return
             case ConsoleKey.D2:
                 throw new NotImplementedException();
-
                 break;
+            #endregion
+
+            #region New car
             case ConsoleKey.D3:
                 Console.Clear();
                 string[] carTraits = CarTraitsValidation();
                 rentACar.irepository.CreateNewCar(carTraits[0], carTraits[1], carTraits[2], carTraits[3], carTraits[4], Convert.ToBoolean(carTraits[5]));
                 break;
+            #endregion
+
+            #region New customer
             case ConsoleKey.D4:
                 Console.Clear();
 
@@ -90,6 +101,9 @@ public class Program
                     $"Id: {customer.Id}");
                 Continue();
                 break;
+            #endregion
+
+
             case ConsoleKey.D5:
                 Environment.Exit(0);
                 break;

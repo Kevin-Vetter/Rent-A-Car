@@ -1,4 +1,6 @@
-﻿namespace RentACar.Service;
+﻿using System;
+
+namespace RentACar.Service;
 
 public class Car
 {
@@ -9,9 +11,9 @@ public class Car
     public int Km { get; set; }
     public int Price { get; set; }
     public bool Home { get; set; }
+    public DateTime ReturnedBy { get; set; }
 
-
-    public Car(int id, string brand, string model, string color, int price, int km, bool home)
+    public Car(int id, string brand, string model, string color, int price, int km, bool home, DateTime returnedBy)
     {
         Id = id;
         Brand = brand;
@@ -20,7 +22,6 @@ public class Car
         Price = price;
         Km = km;
         Home = home;
-
-
+        ReturnedBy    µ        = returnedBy;
     }
 }
