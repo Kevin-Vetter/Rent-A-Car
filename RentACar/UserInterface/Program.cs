@@ -46,15 +46,19 @@ public class Program
             case ConsoleKey.D1:
                 Console.WriteLine("Choose car:");
                 List<string[]> carStrings = rentACar.irepository.GetAllCars();
+                Console.WriteLine("ID \tBrand \tModel \tColor \tPrice \tKM\n");
                 foreach (string[] s in carStrings)
                 {
-                    Console.Write(s[0] + ".\t");
-                    Console.Write(s[1] + "\t");
-                    Console.Write(s[2] + "\t");
-                    Console.Write(s[3] + "\t");
-                    Console.Write("$" + s[4] + "\t");
-                    Console.Write("KM: " + s[5] + "\t");
-                    Console.Write("In store: " + s[6] + "\n");
+                    Console.Write($"{s[0]}. \t");
+                    Console.Write($"{s[1]} \t");
+                    Console.Write($"{s[2]} \t");
+                    Console.Write($"{s[3]} \t");
+                    Console.Write($"${s[4]} \t");
+                    Console.Write($"{s[5]} \t");
+                    if (s[6] == "False")
+                        Console.Write($"In store: {s[6]} - Returned by {s[7]} \n");
+                    else
+                        Console.Write($"In store: {s[6]}\n");
                 }
                 int id;
                 Console.WriteLine();
@@ -77,6 +81,7 @@ public class Program
 
             #region Return
             case ConsoleKey.D2:
+                //TODO: fined for late return
                 throw new NotImplementedException();
                 break;
             #endregion
@@ -85,7 +90,13 @@ public class Program
             case ConsoleKey.D3:
                 Console.Clear();
                 string[] carTraits = CarTraitsValidation();
-                rentACar.irepository.CreateNewCar(carTraits[0], carTraits[1], carTraits[2], carTraits[3], carTraits[4], Convert.ToBoolean(carTraits[5]));
+                rentACar.irepository.CreateNewCar(carTraits[0],
+                    carTraits[1],
+                    carTraits[2],
+                    carTraits[3],
+                    carTraits[4],
+                    Convert.ToBoolean(carTraits[5]),
+                    Convert.ToDateTime(carTraits[6]));
                 break;
             #endregion
 
@@ -119,13 +130,9 @@ public class Program
     #endregion
 
     #region Validation stuff
-
-    //static int IntValidation()
-    //{
-
-    //}
     static string[] CarTraitsValidation()
     {
+        string returnDate = string.Empty;
         string brand = string.Empty;
         string model = string.Empty;
         string color = string.Empty;
@@ -178,11 +185,29 @@ public class Program
                 if (!string.IsNullOrEmpty(home) && home.ToLower() == "true")
                 {
                     home = "true";
+                    returnDate = "01/01/01";
                     break;
                 }
                 else if (home.ToLower() == "false")
                 {
                     home = "false";
+                    DateTime result;
+
+                    while (true)
+                    {
+                        Console.Write("Return Date: ");
+
+                        if (DateTime.TryParse(Console.ReadLine(), out result) && result >= DateTime.Today)
+                        {
+                            break;
+                        }
+                            Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
+                            Console.Write("Return Date: ".PadRight(Console.WindowWidth));
+                            Console.SetCursorPosition(0, Console.GetCursorPosition().Top);
+                    }
+                    returnDate = result.ToShortDateString();
+
+
                     break;
                 }
                 else
@@ -199,7 +224,8 @@ public class Program
                 $"{color}, " +
                 $"{km}km, " +
                 $"${price}" +
-                $"\nIn store: {home}?");
+                $"\nIn store: {home}?" +
+                $"\nReturn date: {returnDate}");
 
             Console.WriteLine("Y/N");
             while (!satisfied)
@@ -217,7 +243,7 @@ public class Program
         }
 
 
-        return new string[] { brand, model, color, km, price, home };
+        return new string[] { brand, model, color, km, price, home, returnDate };
     }
     static string ValidateName()
     {

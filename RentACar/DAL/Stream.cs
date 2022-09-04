@@ -17,7 +17,10 @@ namespace RentACar.DAL
                     $"{car.Color};" +
                     $"{car.Km};" +
                     $"{car.Price};" +
-                    $"{car.Home};");
+                    $"{car.Home};" +
+                    $"{car.ReturnDate.Day}/" +
+                    $"{car.ReturnDate.Month}/" +
+                    $"{car.ReturnDate.Year}");
             }
         }
 

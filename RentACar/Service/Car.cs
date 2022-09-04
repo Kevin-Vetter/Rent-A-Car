@@ -11,9 +11,9 @@ public class Car
     public int Km { get; set; }
     public int Price { get; set; }
     public bool Home { get; set; }
-    public DateTime ReturnedBy { get; set; }
+    public DateTime ReturnDate { get; set; }
 
-    public Car(int id, string brand, string model, string color, int price, int km, bool home, DateTime returnedBy)
+    public Car(int id, string brand, string model, string color, int price, int km, bool home, DateTime returnDate)
     {
         Id = id;
         Brand = brand;
@@ -22,6 +22,7 @@ public class Car
         Price = price;
         Km = km;
         Home = home;
-        ReturnedBy    µ        = returnedBy;
+        ReturnDate = Convert.ToDateTime(returnDate.ToShortDateString());
     }
+
 }

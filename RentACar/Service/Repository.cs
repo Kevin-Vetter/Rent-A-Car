@@ -18,7 +18,7 @@ public class Repository : IRepository
 
 
     }
-    public void CreateNewCar(string brand, string model, string color, string km, string price, bool home)
+    public void CreateNewCar(string brand, string model, string color, string km, string price, bool home, DateTime returnDate)
     {
         //Id, Brand, Model, Color, Home
 
@@ -29,7 +29,8 @@ public class Repository : IRepository
             color,
             Convert.ToInt32(km),
             Convert.ToInt32(price),
-            home);
+            home,
+            returnDate); ;
 
         DAL.Stream.SaveCar(car);
     }
@@ -45,12 +46,12 @@ public class Repository : IRepository
                 arr[3],
                 Convert.ToInt32(arr[4]),
                 Convert.ToInt32(arr[5]),
-                Convert.ToBoolean(arr[6])));
+                Convert.ToBoolean(arr[6]),
+                Convert.ToDateTime(arr[7])));
         }
         return cars;
     }
     public Car UpdateCar(Car car)
-
     {
         throw new System.NotImplementedException();
     }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace RentACar.Service.Interface;
 
@@ -7,7 +8,7 @@ public interface IRepository
 
     #region Car stuff
     public void RentCar(int id);
-    void CreateNewCar(string brand, string model, string color, string km, string price, bool home);
+    void CreateNewCar(string brand, string model, string color, string km, string price, bool home, DateTime returnDate);
     public Car UpdateCar(Car car);
     public Car GetCarById(int id);
     public List<string[]> GetAllCars();

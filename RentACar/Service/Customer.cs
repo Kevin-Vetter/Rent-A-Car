@@ -14,4 +14,6 @@ public class Customer
         Id = id;
         Age = age;
     }
+
+    //TODO: START DOING CUSTOMER CSV X( (Copy paste maybe)
 }
