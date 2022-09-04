@@ -24,7 +24,6 @@ namespace RentACar.DAL
             }
         }
 
-
         static public List<string[]> ReadAllCars()
         {
             using (StreamReader reader = new StreamReader(@"C:\Users\kevin\Desktop\Cars.csv"))
@@ -62,5 +61,39 @@ namespace RentACar.DAL
                 }
             }
         }
+
+
+
+
+        static public void SaveCustomers(Customer customer)
+        {
+            using (TextWriter writer = new StreamWriter(@"C:\Users\kevin\Desktop\Cars.csv", true))
+            {
+                writer.WriteLine($"{Customer.Id}");
+            }
+        }
+        
+        static public void RealAllUsers(int id)
+        {
+            using (StreamReader reader = new StreamReader(@"C:\Users\kevin\Desktop\Customers.csv"))
+            {
+
+                while (!reader.EndOfStream)
+                {
+                    List<string> listA = new List<string>();
+                    string line = reader.ReadLine();
+                    string[] values = line.Split(';');
+                    if (values[0] == id.ToString())
+                    {
+                        for (int i = 0; i < values.Length; i++)
+                        {
+                            listA.Add(values[i]);
+                        }
+                    }
+                }
+            }
+        }
+
+
     }
 }
