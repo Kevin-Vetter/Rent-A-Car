@@ -12,6 +12,7 @@ public interface IRepository
     public Car UpdateCar(Car car);
     public Car GetCarById(int id);
     public List<string[]> GetAllCars();
+    public bool CarInStore(int id);
     #endregion
 
 

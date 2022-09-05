@@ -12,6 +12,7 @@ public class Car
     public int Price { get; set; }
     public bool Home { get; set; }
     public DateTime ReturnDate { get; set; }
+    public int ReservedToId { get; set; }
 
     public Car(int id, string brand, string model, string color, int price, int km, bool home, DateTime returnDate)
     {

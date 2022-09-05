@@ -8,12 +8,11 @@ namespace RentACar;
 
 public class Program
 {
-    //TODO: First time bit
     static void Main()
     {
+        //TODO: Summary all over the place, thew new stfu, test? X(
         Menu();
         Console.Clear();
-        Main();
     }
 
     #region Menu stuff
@@ -66,10 +65,14 @@ public class Program
                 while (true)
                 {
                     Console.Write("Id: ");
-                    //TODO: Do some home check, else reserve!
-                    if (int.TryParse(Console.ReadLine(), out id))
+                    if (int.TryParse(Console.ReadLine(), out id) && !rentACar.irepository.CarInStore(id))
                     {
+                        //TODO: Reserve to customer id
                         break;
+                    }
+                    else if (rentACar.irepository.CarInStore(id))
+                    {
+                        //TODO: RentedCarID to Car Id Car.ReturnDate = DateTime.Today + 1week
                     }
                     Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
                     Console.Write("".PadRight(Console.WindowWidth));
@@ -82,6 +85,7 @@ public class Program
 
             #region Return
             case ConsoleKey.D2:
+                //TODO: everything return, carwash (async? - ChrThy), bon
                 //TODO: fined for late return
                 throw new NotImplementedException();
                 break;
@@ -277,6 +281,8 @@ public class Program
 
         return age;
     }
+
+
     static void Continue()
     {
         Console.WriteLine("\nPress any key to continue");
