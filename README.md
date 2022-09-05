@@ -7,7 +7,7 @@
 * [Tags](#Tags)
 * [Changelog](#Changelog)
 * [To-do](#To-do)
-* [Known Issues](#KnownIssues)
+* [Known Issues](#Known-Issues)
 
 ## Intro
 Rent A Car™ - Is a Car renting service with connected carwash  
