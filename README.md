@@ -17,11 +17,13 @@ Should a customers return of car be delayed, an additional fee of $14.99  will f
 **Menu:** The menu is simple and intuitive, picture below ↓
 
 ![image](https://user-images.githubusercontent.com/96051505/188391760-f49308d7-c6f5-4690-967c-0406d50ab7b1.png)  
-**1.** The first option lets user rent a car, user will be prompted with car selection [**Input car ID**] after which user will be prompted with customer selection [**Input customer ID**]    
-**2.** f  
-**3.** c  
-**4.** d  
-**5.** e  
+**1.** The first option lets the user rent a car, user will be prompted with car 
+selection [**Input car ID**] after which user will be prompted with customer 
+selection [**Input customer ID**].  
+**2.** The second option lets the user return a rented car [**Input customer ID**].  
+**3.** The third option lets the user create a new car [**Input car traits**].  
+**4.** The fourth option lets the user create a new customer [**Input customer traits**].  
+**5.** The fifth option lets the user exit the program.  
 ## Tags
 
 * [version 2]
@@ -33,11 +35,11 @@ Should a customers return of car be delayed, an additional fee of $14.99  will f
 ## Changelog
 All commits can be found on
 [Github](https://github.com/Kevin-Vetter/Rent-A-Car/commits/).  
-The commits don't actually matter, look at the versions in [Tags] instead.
+The commits don't actually describe anything, look at the versions in [Tags] instead.
 
 # To-do
-* [x] Biler skal vaskes inden udlejning
-* [x] Blive skrevet op til en bestemt bil
-* [x] Oversigt over udlejning
-* [x] Statistik over udlejninger, mest populære biler  
-* [x] Faktura til kunden
+* [x] Cars should be cleaned before you can rent them
+* [x] Reserve a specific car
+* [x] List over in & out of store cars
+* [x] Most popular cars
+* [x] Receipt for your purchase
