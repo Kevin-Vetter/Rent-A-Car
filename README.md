@@ -39,8 +39,8 @@ All commits can be found on
 The commits don't actually describe anything, look at the versions in [Tags] instead.
 
 # To-do
-* [x] Cars should be cleaned before you can rent them
-* [x] Reserve a specific car
-* [x] List over in & out of store cars
-* [x] Most popular cars
-* [x] Receipt for your purchase
+* [ ] Cars should be cleaned before you can rent them
+* [ ] Reserve a specific car
+* [ ] List over in & out of store cars
+* [ ] Most popular cars
+* [ ] Receipt for your purchase
