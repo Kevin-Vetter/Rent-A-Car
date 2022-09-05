@@ -44,3 +44,7 @@ The commits don't actually describe anything, look at the versions in [Tags] ins
 * [ ] List over in & out of store cars
 * [ ] Most popular cars
 * [ ] Receipt for your purchase
+
+# Known Issues
+ * Crashes if you try to rent a car and no car exists
+
