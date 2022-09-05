@@ -44,6 +44,7 @@ public class Program
         {
             #region Rent car
             case ConsoleKey.D1:
+                //TODO: Only do if KM < 200K
                 Console.WriteLine("Choose car:");
                 List<string[]> carStrings = rentACar.irepository.GetAllCars();
                 Console.WriteLine("ID \tBrand \tModel \tColor \tPrice \tKM\n");
@@ -85,6 +86,7 @@ public class Program
 
             #region Return
             case ConsoleKey.D2:
+                //TODO: ADD KM
                 //TODO: everything return, carwash (async? - ChrThy), bon
                 //TODO: fined for late return
                 throw new NotImplementedException();
