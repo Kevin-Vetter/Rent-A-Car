@@ -3,6 +3,7 @@
 
 ## Table of content
 * [Intro](#Intro)
+* [Instructions](#Instructions)
 * [Tags](#Tags)
 * [Changelog](#Changelog)
 * [To-do](#To-do)
