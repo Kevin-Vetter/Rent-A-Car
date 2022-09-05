@@ -7,7 +7,7 @@
 * [Tags](#Tags)
 * [Changelog](#Changelog)
 * [To-do](#To-do)
-* [Known Issues](#Known Issues)
+* [Known Issues](#KnownIssues)
 
 ## Intro
 Rent A Car™ - Is a Car renting service with connected carwash  
@@ -39,13 +39,13 @@ All commits can be found on
 [Github](https://github.com/Kevin-Vetter/Rent-A-Car/commits/).  
 The commits don't actually describe anything, look at the versions in [Tags] instead.
 
-# To-do
+## To-do
 * [ ] Cars should be cleaned before you can rent them
 * [ ] Reserve a specific car
 * [ ] List over in & out of store cars
 * [ ] Most popular cars
 * [ ] Receipt for your purchase
 
-# Known Issues
+## Known Issues
  * Crashes if you try to rent a car and no car exists
 
