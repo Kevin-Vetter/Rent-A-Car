@@ -69,7 +69,7 @@ namespace RentACar.DAL
         {
             using (TextWriter writer = new StreamWriter(@"C:\Users\kevin\Desktop\Cars.csv", true))
             {
-                writer.WriteLine($"{Customer.Id}");
+                //writer.WriteLine($"{Customer.Id}");
             }
         }
         

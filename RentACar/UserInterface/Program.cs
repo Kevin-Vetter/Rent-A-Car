@@ -8,6 +8,7 @@ namespace RentACar;
 
 public class Program
 {
+    //TODO: First time bit
     static void Main()
     {
         Menu();
@@ -33,7 +34,7 @@ public class Program
             "1. Rent car \n" +
             "2. Return car \n" +
             "3. New car \n" +
-            "4. New Customer \n" +
+            "4. New customer \n" +
             "5. Exit \n");
         OptionHandler(rentACar);
     }
