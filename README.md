@@ -42,6 +42,7 @@ The commits don't actually describe anything, look at the versions in [Tags] ins
 ## To-do
 * [ ] Cars should be cleaned before you can rent them
 * [ ] Reserve a specific car
+* [ ] Automaticly see if a new car is in stock
 * [ ] List over in & out of store cars
 * [ ] Most popular cars
 * [ ] Receipt for your purchase
