@@ -10,7 +10,7 @@ public class Program
 {
     static void Main()
     {
-        //TODO: Summary all over the place, thew new stfu, test? X(
+        //TODO: Summary all over the place, thew new stfu, test (TEST ON FINES!!!! [BRILLIANT])? X(
         Menu();
         Console.Clear();
     }
