@@ -1,15 +1,19 @@
-﻿using RentACar.Service;
+﻿using Microsoft.VisualBasic;
+using RentACar.Service;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Xml.Linq;
 
 namespace RentACar.DAL
 {
     public class Stream
     {
-        private static string _carPath = @"C:\Users\kevin\source\repos\Rent-A-Car\RentACar\Database\Cars.csv";
-        private static string _customerPath = @"C:\Users\Kevin\source\repos\Rent-A-Car\RentACar\Database\Customers.csv";
+        private static readonly string _carPath = @"C:\Users\kevin\source\repos\Rent-A-Car\RentACar\Database\Cars.csv";
+        private static readonly string _customerPath = @"C:\Users\Kevin\source\repos\Rent-A-Car\RentACar\Database\Customers.csv";
+        private static readonly string _booksPath = @"C:\Users\Kevin\source\repos\Rent-A-Car\RentACar\Database\Books.csv";
 
         static public void SaveCar(Car car)
         {
@@ -29,7 +33,6 @@ namespace RentACar.DAL
                 //TODO: ReservedToId
             }
         }
-
         static public void SaveAllCars(List<string[]> cars)
         {
             using (TextWriter writer = new StreamWriter(_carPath))
@@ -69,7 +72,6 @@ namespace RentACar.DAL
             cars.Add(list.ToArray());
             SaveAllCars(cars);
         }
-
         static public List<string[]> ReadAllCars()
         {
             using (StreamReader reader = new StreamReader(_carPath))
@@ -86,7 +88,6 @@ namespace RentACar.DAL
                 return cars;
             }
         }
-
         static public void UpdateCustomer(Customer customer)
         {
             List<string[]> customers = ReadAllCustomers();
@@ -117,40 +118,39 @@ namespace RentACar.DAL
                 foreach (string[] customer in customers)
                     if (customer[3] != null || customer[3] != "0")
                     {
-                        writer.Write($"{customer[0]};");
-                        writer.Write($"{customer[1]};");
-                        writer.Write($"{customer[2]};");
-                        writer.Write($"{customer[3]};");
+                        writer.WriteLine($"{customer[0]};" +
+                            $"{customer[1]};" +
+                            $"{customer[2]};" +
+                            $"{customer[3]}");
                     }
                     else
                     {
-                        writer.Write($"{customer[0]};");
-                        writer.Write($"{customer[1]};");
-                        writer.Write($"{customer[2]};");
+                        writer.WriteLine($"{customer[0]};" +
+                            $"{customer[1]};" +
+                            $"{customer[2]}");
                     }
             }
         }
-
         static public void SaveCustomer(Customer customer)
         {
             using (TextWriter writer = new StreamWriter(_customerPath, true))
             {
                 if (customer.RentedCarId != null)
                 {
-                    writer.Write($"{customer.Name};");
-                    writer.Write($"{customer.Id};");
-                    writer.Write($"{customer.Age};");
-                    writer.Write($"{customer.RentedCarId}");
+                    writer.WriteLine($"{customer.Name};" +
+                        $"{customer.Id};" +
+                        $"{customer.Age};" +
+                        $"{customer.RentedCarId}");
                 }
                 else
                 {
-                    writer.Write($"{customer.Name};");
-                    writer.Write($"{customer.Id};");
-                    writer.Write($"{customer.Age};");
+                    writer.WriteLine($"{customer.Name};" +
+                        $"{customer.Id};" +
+                        $"{customer.Age};");
                 }
+
             }
         }
-
         static public List<string[]> ReadAllCustomers()
         {
             using (StreamReader reader = new StreamReader(_customerPath))
@@ -167,6 +167,37 @@ namespace RentACar.DAL
             }
         }
 
+        #region Books
 
+        static public void UpdateBooks(Car car)
+        {
+            using (TextWriter writer = new StreamWriter(_booksPath, true))
+            {
+                writer.WriteLine($"{car.Price}");
+            }
+        }
+
+        static public int GetBooks()
+        {
+            int book = 0;
+            using (StreamReader reader = new StreamReader(_booksPath))
+            {
+                while (!reader.EndOfStream)
+                {
+                    string line = reader.ReadLine();
+                    int.TryParse(line, out int res);
+                    book += res;
+                }
+            }
+            return book;
+        }
+        static public void ExtraPay(int ammount)
+        {
+            using (StreamWriter writer= new StreamWriter(_booksPath))
+            {
+                writer.WriteLine(ammount);
+            }
+        }
+        #endregion
     }
 }

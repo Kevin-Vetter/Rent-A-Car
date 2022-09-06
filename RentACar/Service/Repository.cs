@@ -8,26 +8,6 @@ public class Repository : IRepository
     #region Car 
     private List<Car> _cars = new(CreateAllCars());
 
-    public void RentCar(int id)
-    {
-        //TODO: DO Rest of Rent CAR!!!
-        Car selectedCar = _cars.Find(x => x.Id == id);
-    }
-    public void CreateNewCar(string brand, string model, string color, string km, string price, bool home, DateTime returnDate, int reservedToId)
-    {
-        Car car = new Car(
-            _cars.Count + 1,
-            brand,
-            model,
-            color,
-            Convert.ToInt32(km),
-            Convert.ToInt32(price),
-            home,
-            returnDate,
-            reservedToId);
-        DAL.Stream.SaveCar(car);
-        _cars.Add(car);
-    }
     static private List<Car> CreateAllCars()
     {
         List<Car> cars = new List<Car>();
@@ -48,9 +28,20 @@ public class Repository : IRepository
         }
         return cars;
     }
-    public Car UpdateCar(Car car)
+    public void CreateNewCar(string brand, string model, string color, string km, string price, bool home, DateTime returnDate, int reservedToId)
     {
-        throw new System.NotImplementedException();
+        Car car = new Car(
+            _cars.Count + 1,
+            brand,
+            model,
+            color,
+            Convert.ToInt32(km),
+            Convert.ToInt32(price),
+            home,
+            returnDate,
+            reservedToId);
+        DAL.Stream.SaveCar(car);
+        _cars.Add(car);
     }
     public bool CarInStore(int id)
     {
@@ -85,11 +76,33 @@ public class Repository : IRepository
     }
     public void RentCar(int carId, int customerId)
     {
-        Customer customer = GetCustomerById(customerId);
         Car car = GetCarById(carId);
-        customer.RentedCarId = carId;
-        DAL.Stream.UpdateCustomer(customer);
-        //TODO: Reserve to customer id
+        if (carId == customerId)
+        {
+            Customer customer = GetCustomerById(customerId);
+            customer.RentedCarId = carId;
+            car.ReturnDate = DateTime.Today.AddDays(7);
+            car.Home = false;
+            car.ReservedToId = 0;
+            DAL.Stream.UpdateCustomer(customer);
+            DAL.Stream.UpdateCar(car);
+        }
+    }
+    public void ReturnCar(int customerId, int addedKm)
+    {
+        Customer customer = GetCustomerById(customerId);
+        Car car;
+        if (customer.RentedCarId != null)
+        {
+            car = GetCarById((int)customer.RentedCarId);
+            car.ReturnDate = DateTime.MinValue;
+            car.Km += addedKm;
+            car.Home = true;
+            DAL.Stream.UpdateCar(car);
+            DAL.Stream.UpdateBooks(car);
+            customer.RentedCarId = 0;
+            DAL.Stream.UpdateCustomer(customer);
+        }
     }
     #endregion
 
@@ -106,7 +119,7 @@ public class Repository : IRepository
         {
             if (string.IsNullOrEmpty(arr[3]))
             {
-                customers.Add(new Customer(arr[0], Convert.ToInt32(arr[1]),Convert.ToInt32(arr[2])));
+                customers.Add(new Customer(arr[0], Convert.ToInt32(arr[1]), Convert.ToInt32(arr[2])));
             }
             else
                 customers.Add(new Customer(arr[0],
@@ -128,17 +141,6 @@ public class Repository : IRepository
     {
         return _customers.Find(c => c.Id == id);
     }
-    public List<Customer> GetAllCustomers()
-    {
-        throw new System.NotImplementedException();
-    }
-    public void UpdateCustomer()
-    {
-    }
-    public void DisableCustomer()
-    {
-        throw new System.NotImplementedException();
-    }
     public bool DoesCustomerExist(int id)
     {
         if (_customers.Find(c => c.Id == id) != null)
@@ -146,4 +148,13 @@ public class Repository : IRepository
         return false;
     }
     #endregion
+
+    public int ViewBooks()
+    {
+        return DAL.Stream.GetBooks();
+    }
+    public void ExtraPay(int ammount)
+    {
+        DAL.Stream.ExtraPay(ammount);
+    }
 }

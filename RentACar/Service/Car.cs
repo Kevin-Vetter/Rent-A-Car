@@ -28,5 +28,3 @@ public class Car
     }
 
 }
-
-//TODO: set reserved id to 0 after reserved

@@ -4,6 +4,8 @@ using RentACar.Service.Interface;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using System.Security.Cryptography;
+using System.Threading.Tasks;
 
 namespace RentACar;
 
@@ -11,11 +13,10 @@ public class Program
 {
     static void Main()
     {
-        //TODO: IF reserved, go fuck yourself
         //TODO: Summary all over the place, thew new stfu, test (TEST ON FINES!!!! [BRILLIANT])? X(
         Menu();
         Console.Clear();
-        Menu();
+        Main();
     }
 
     #region Menu stuff
@@ -37,7 +38,8 @@ public class Program
             "2. Return car \n" +
             "3. New car \n" +
             "4. New customer \n" +
-            "5. Exit \n");
+            "5. Books \n" +
+            "6. Exit \n");
         OptionHandler(rentACar);
     }
 
@@ -70,18 +72,18 @@ public class Program
                 }
                 int id;
                 Console.WriteLine();
+                int customerId;
                 while (true)
                 {
                     Console.Write("Id: ");
                     if (int.TryParse(Console.ReadLine(), out id) && !rentACar.irepository.CarInStore(id))
                     {
-                        int cId;
                         Console.Write("Customer id: ");
                         while (true)
                         {
-                            if (int.TryParse(Console.ReadLine(), out cId) && rentACar.irepository.DoesCustomerExist(cId))
+                            if (int.TryParse(Console.ReadLine(), out customerId) && rentACar.irepository.DoesCustomerExist(customerId))
                             {
-                                rentACar.irepository.ReserveCar(id,cId);
+                                rentACar.irepository.ReserveCar(id, customerId);
                                 break;
                             }
                             Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
@@ -92,8 +94,19 @@ public class Program
                     }
                     else if (rentACar.irepository.CarInStore(id))
                     {
-                        //TODO: RentedCarID to Car Id Car.ReturnDate = DateTime.Today + 1week
-                        rentACar.irepository.RentCar(id);
+                        int cusId;
+                        Console.Write("Customer id: ");
+                        while (true)
+                        {
+                            if (int.TryParse(Console.ReadLine(), out cusId) && rentACar.irepository.DoesCustomerExist(cusId))
+                            {
+                                rentACar.irepository.RentCar(id, cusId);
+                                break;
+                            }
+                            Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
+                            Console.Write("".PadRight(Console.WindowWidth));
+                            Console.SetCursorPosition(0, Console.GetCursorPosition().Top);
+                        }
                         break;
                     }
                     Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
@@ -106,10 +119,51 @@ public class Program
 
             #region Return
             case ConsoleKey.D2:
-                //TODO: ADD KM
-                //TODO: everything return, carwash (async? - ChrThy), bon
-                //TODO: fined for late return
-                throw new NotImplementedException();
+                int cId;
+                int addedKm;
+                while (true)
+                {
+                    Console.Write("Customer id: ");
+                    if (int.TryParse(Console.ReadLine(), out cId))
+                    {
+                        while (true)
+                        {
+                            Console.Write("Kilometers driven: ");
+                            if (int.TryParse(Console.ReadLine(), out addedKm))
+                            {
+                                break;
+                            }
+                            Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
+                            Console.Write("".PadRight(Console.WindowWidth));
+                            Console.SetCursorPosition(0, Console.GetCursorPosition().Top);
+                        }
+                        break;
+                    }
+                    Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
+                    Console.Write("".PadRight(Console.WindowWidth));
+                    Console.SetCursorPosition(0, Console.GetCursorPosition().Top);
+
+                }
+                bool loop = true;
+                Console.WriteLine("Extra dirty car? Y/N");
+                while (loop)
+                {
+                    if (Console.ReadKey(true).Key == ConsoleKey.Y)
+                    {
+                        rentACar.irepository.ExtraPay(50);
+                        Console.WriteLine("Washing car, please wait!");
+                        WashCar(5000);
+                        loop = false;
+                    }
+                    else if (Console.ReadKey(true).Key == ConsoleKey.N)
+                    {
+                        Console.WriteLine("Washing car, please wait!");
+                        WashCar(2000);
+
+                        break;
+                    }
+                }
+                rentACar.irepository.ReturnCar(cId, addedKm);
                 break;
             #endregion
 
@@ -144,6 +198,11 @@ public class Program
 
 
             case ConsoleKey.D5:
+                Console.WriteLine($"Current net profit this month ${rentACar.irepository.ViewBooks()}");
+                Continue();
+                break;
+
+            case ConsoleKey.D6:
                 Environment.Exit(0);
                 break;
 
@@ -153,8 +212,6 @@ public class Program
                 break;
         }
     }
-
-
     #endregion
 
 
@@ -257,20 +314,19 @@ public class Program
                 $"\nReturn date: {returnDate}");
 
             Console.WriteLine("Y/N");
-            while (!satisfied)
+            while (true)
             {
                 if (Console.ReadKey(true).Key == ConsoleKey.Y)
                 {
                     satisfied = true;
+                    break;
                 }
                 else if (Console.ReadKey(true).Key == ConsoleKey.N)
                 {
                     Console.Clear();
-                    satisfied = false;
                     break;
                 }
             }
-            break;
         }
 
 
@@ -293,26 +349,29 @@ public class Program
     }
     static int ValidateAge()
     {
-        bool CorrectInt = false;
         int age = 0;
 
-        while (!CorrectInt)
+        while (true)
         {
             Console.WriteLine("Type your age: ");
-            CorrectInt = int.TryParse(Console.ReadLine(), out age);
-            if (age < 18)
-                CorrectInt = false;
+            int.TryParse(Console.ReadLine(), out age);
+            if (age > 17 && age < 120)
+                break;
             Console.Clear();
         }
 
         return age;
     }
-
+    #endregion
 
     static void Continue()
     {
         Console.WriteLine("\nPress any key to continue");
         Console.ReadKey();
     }
-    #endregion
+
+    static void WashCar(int time)
+    {
+        Task.Delay(time).Wait();
+    }
 }
