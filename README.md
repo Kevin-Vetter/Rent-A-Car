@@ -28,8 +28,10 @@ selection [**Input customer ID**].
 **5.** The fifth option lets the user exit the program.  
 ## Tags
 
+* [version 3]
+  * [3.0](https://github.com/Kevin-Vetter/Rent-A-Car/releases/tag/Version_3.0) - Current version  
 * [version 2]
-  * [2.3](https://github.com/Kevin-Vetter/Rent-A-Car/releases/tag/Version_2.3) - Current version
+  * [2.3](https://github.com/Kevin-Vetter/Rent-A-Car/releases/tag/Version_2.3)
   * [2.2](https://github.com/Kevin-Vetter/Rent-A-Car/releases/tag/Version_2.2)
   * [2.1](https://github.com/Kevin-Vetter/Rent-A-Car/releases/tag/Version_2.1)
   * [2.0](https://github.com/Kevin-Vetter/Rent-A-Car/releases/tag/Version_2.0)
