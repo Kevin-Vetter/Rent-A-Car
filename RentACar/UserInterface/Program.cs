@@ -10,9 +10,11 @@ public class Program
 {
     static void Main()
     {
+        //TODO: IF reserved, go fuck yourself
         //TODO: Summary all over the place, thew new stfu, test (TEST ON FINES!!!! [BRILLIANT])? X(
         Menu();
         Console.Clear();
+        Menu();
     }
 
     #region Menu stuff
@@ -44,12 +46,15 @@ public class Program
         {
             #region Rent car
             case ConsoleKey.D1:
-                //TODO: Only do if KM < 200K
                 Console.WriteLine("Choose car:");
                 List<string[]> carStrings = rentACar.irepository.GetAllCars();
                 Console.WriteLine("ID \tBrand \tModel \tColor \tPrice \tKM\n");
                 foreach (string[] s in carStrings)
                 {
+                    if (Convert.ToInt32(s[5]) > 199999)
+                    {
+                        continue;
+                    }
                     Console.Write($"{s[0]}. \t");
                     Console.Write($"{s[1]} \t");
                     Console.Write($"{s[2]} \t");
@@ -69,11 +74,25 @@ public class Program
                     if (int.TryParse(Console.ReadLine(), out id) && !rentACar.irepository.CarInStore(id))
                     {
                         //TODO: Reserve to customer id
+                        int cId;
+                        Console.Write("Customer id: ");
+                        while (true)
+                        {
+                            if (int.TryParse(Console.ReadLine(), out cId))
+                            {
+                                break;
+                            }
+                            Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
+                            Console.Write("".PadRight(Console.WindowWidth));
+                            Console.SetCursorPosition(0, Console.GetCursorPosition().Top);
+                        }
+                        GetCustomerById(cId);
                         break;
                     }
                     else if (rentACar.irepository.CarInStore(id))
                     {
                         //TODO: RentedCarID to Car Id Car.ReturnDate = DateTime.Today + 1week
+                        break;
                     }
                     Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
                     Console.Write("".PadRight(Console.WindowWidth));
@@ -135,6 +154,11 @@ public class Program
 
 
     #endregion
+
+    static int GetCustomerById(int id)
+    {
+        return 0;
+    }
 
     #region Validation stuff
     static string[] CarTraitsValidation()
@@ -208,9 +232,9 @@ public class Program
                         {
                             break;
                         }
-                            Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
-                            Console.Write("Return Date: ".PadRight(Console.WindowWidth));
-                            Console.SetCursorPosition(0, Console.GetCursorPosition().Top);
+                        Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
+                        Console.Write("Return Date: ".PadRight(Console.WindowWidth));
+                        Console.SetCursorPosition(0, Console.GetCursorPosition().Top);
                     }
                     returnDate = result.ToShortDateString();
 
@@ -244,9 +268,11 @@ public class Program
                 else if (Console.ReadKey(true).Key == ConsoleKey.N)
                 {
                     Console.Clear();
+                    satisfied = false;
                     break;
                 }
             }
+            break;
         }
 
 

@@ -33,6 +33,8 @@ public class Repository : IRepository
         List<string[]> arrayList = new(DAL.Stream.ReadAllCars());
         foreach (string[] arr in arrayList)
         {
+            if (Convert.ToInt32(arr[5]) > 199999)
+                continue;
             cars.Add(new Car(Convert.ToInt32(arr[0]),
                 arr[1],
                 arr[2],
@@ -51,14 +53,22 @@ public class Repository : IRepository
 
     public bool CarInStore(int id)
     {
-        if (GetCarById(id).Home)
-            return true;
+        if (GetCarById(id) != null)
+        {
+            if (GetCarById(id).Home)
+            {
+                return true;
+            }
+        }
         return false;
     }
 
     public Car GetCarById(int id)
     {
-        return _cars.Find(x => x.Id == id);
+        Car selectedCar = _cars.Find(x => x.Id == id);
+        if (selectedCar == null)
+            return null;
+        return selectedCar;
     }
     public List<string[]> GetAllCars()
     {

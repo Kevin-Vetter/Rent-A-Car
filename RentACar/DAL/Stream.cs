@@ -8,8 +8,8 @@ namespace RentACar.DAL
 {
     public class Stream
     {
-        private static string _carPath = @"C:\Users\Kevin\source\repos\Rent-A-Car\RentACar\Database\Cars.csv";
-        private static string _customerPath = @"C:\Users\Kevin\source\repos\Rent-A-Car\RentACar\Database\Customers.csv";
+        private static string _carPath = @"C:\Users\kevin\source\repos\RentACar\RentACar\Database\Cars.csv";
+        private static string _customerPath = @"C:\Users\Kevin\source\repos\RentACar\RentACar\Database\Customers.csv";
 
         static public void SaveCar(Car car)
         {
@@ -25,6 +25,7 @@ namespace RentACar.DAL
                     $"{car.ReturnDate.Day}/" +
                     $"{car.ReturnDate.Month}/" +
                     $"{car.ReturnDate.Year}");
+                //TODO: ReservedToId
             }
         }
 
@@ -46,6 +47,7 @@ namespace RentACar.DAL
         {
             using (StreamReader reader = new StreamReader(_carPath))
             {
+                //TODO: Finish UpdateCar (Return)
                 List<string[]> cars = ReadAllCars();
                 cars.Remove(cars.Find(c => c[0] == car[0]));
                 cars.Add(car);
@@ -57,6 +59,7 @@ namespace RentACar.DAL
         {
             using (StreamReader reader = new StreamReader(_carPath))
             {
+                //TODO: ReservedToId
                 List<string[]> cars = new List<string[]>();
                 while (!reader.EndOfStream)
                 {
@@ -72,23 +75,7 @@ namespace RentACar.DAL
         //possibly useless
         static public void LoadCar(int id)
         {
-            using (StreamReader reader = new StreamReader(@"C:\Users\kevin\Desktop\Cars.csv"))
-            {
-
-                while (!reader.EndOfStream)
-                {
-                    List<string> listA = new List<string>();
-                    string line = reader.ReadLine();
-                    string[] values = line.Split(';');
-                    if (values[0] == id.ToString())
-                    {
-                        for (int i = 0; i < values.Length; i++)
-                        {
-                            listA.Add(values[i]);
-                        }
-                    }
-                }
-            }
+            throw new System.NotImplementedException();
         }
 
 
