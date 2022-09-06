@@ -2,6 +2,7 @@
 using RentACar.Service.Repository;
 using RentACar.Service.Interface;
 using System.Collections.Generic;
+using System.Linq;
 using System;
 
 namespace RentACar;
@@ -48,8 +49,9 @@ public class Program
             case ConsoleKey.D1:
                 Console.WriteLine("Choose car:");
                 List<string[]> carStrings = rentACar.irepository.GetAllCars();
+                List<string[]> sortedCarStrings = carStrings.OrderBy(arr => arr[0]).ToList();
                 Console.WriteLine("ID \tBrand \tModel \tColor \tPrice \tKM\n");
-                foreach (string[] s in carStrings)
+                foreach (string[] s in sortedCarStrings)
                 {
                     if (Convert.ToInt32(s[5]) > 199999)
                     {
@@ -73,32 +75,31 @@ public class Program
                     Console.Write("Id: ");
                     if (int.TryParse(Console.ReadLine(), out id) && !rentACar.irepository.CarInStore(id))
                     {
-                        //TODO: Reserve to customer id
                         int cId;
                         Console.Write("Customer id: ");
                         while (true)
                         {
-                            if (int.TryParse(Console.ReadLine(), out cId))
+                            if (int.TryParse(Console.ReadLine(), out cId) && rentACar.irepository.DoesCustomerExist(cId))
                             {
+                                rentACar.irepository.ReserveCar(id,cId);
                                 break;
                             }
                             Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
                             Console.Write("".PadRight(Console.WindowWidth));
                             Console.SetCursorPosition(0, Console.GetCursorPosition().Top);
                         }
-                        GetCustomerById(cId);
                         break;
                     }
                     else if (rentACar.irepository.CarInStore(id))
                     {
                         //TODO: RentedCarID to Car Id Car.ReturnDate = DateTime.Today + 1week
+                        rentACar.irepository.RentCar(id);
                         break;
                     }
                     Console.SetCursorPosition(0, Console.GetCursorPosition().Top - 1);
                     Console.Write("".PadRight(Console.WindowWidth));
                     Console.SetCursorPosition(0, Console.GetCursorPosition().Top);
                 }
-                rentACar.irepository.RentCar(id);
                 Continue();
                 break;
             #endregion
@@ -122,7 +123,8 @@ public class Program
                     carTraits[3],
                     carTraits[4],
                     Convert.ToBoolean(carTraits[5]),
-                    Convert.ToDateTime(carTraits[6]));
+                    Convert.ToDateTime(carTraits[6]),
+                    0);
                 break;
             #endregion
 
@@ -155,10 +157,6 @@ public class Program
 
     #endregion
 
-    static int GetCustomerById(int id)
-    {
-        return 0;
-    }
 
     #region Validation stuff
     static string[] CarTraitsValidation()
@@ -216,7 +214,7 @@ public class Program
                 if (!string.IsNullOrEmpty(home) && home.ToLower() == "true")
                 {
                     home = "true";
-                    returnDate = "01/01/01";
+                    returnDate = "01/01/2001";
                     break;
                 }
                 else if (home.ToLower() == "false")

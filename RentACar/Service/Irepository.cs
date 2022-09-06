@@ -8,7 +8,7 @@ public interface IRepository
 
     #region Car stuff
     public void RentCar(int id);
-    void CreateNewCar(string brand, string model, string color, string km, string price, bool home, DateTime returnDate);
+    void CreateNewCar(string brand, string model, string color, string km, string price, bool home, DateTime returnDate, int reservedToId);
     public Car UpdateCar(Car car);
     public Car GetCarById(int id);
     public List<string[]> GetAllCars();
@@ -22,5 +22,7 @@ public interface IRepository
     public List<Customer> GetAllCustomers();
     public void UpdateCustomer();
     public void DisableCustomer();
+    public bool DoesCustomerExist(int id);
+    public void ReserveCar(int carId, int customerId);
     #endregion
 }

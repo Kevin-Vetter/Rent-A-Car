@@ -13,7 +13,7 @@ public class Repository : IRepository
         //TODO: DO Rest of Rent CAR!!!
         Car selectedCar = _cars.Find(x => x.Id == id);
     }
-    public void CreateNewCar(string brand, string model, string color, string km, string price, bool home, DateTime returnDate)
+    public void CreateNewCar(string brand, string model, string color, string km, string price, bool home, DateTime returnDate, int reservedToId)
     {
         Car car = new Car(
             _cars.Count + 1,
@@ -23,7 +23,8 @@ public class Repository : IRepository
             Convert.ToInt32(km),
             Convert.ToInt32(price),
             home,
-            returnDate); ;
+            returnDate,
+            reservedToId);
         DAL.Stream.SaveCar(car);
         _cars.Add(car);
     }
@@ -42,7 +43,8 @@ public class Repository : IRepository
                 Convert.ToInt32(arr[4]),
                 Convert.ToInt32(arr[5]),
                 Convert.ToBoolean(arr[6]),
-                Convert.ToDateTime(arr[7])));
+                Convert.ToDateTime(arr[7]),
+                Convert.ToInt32(arr[8])));
         }
         return cars;
     }
@@ -50,7 +52,6 @@ public class Repository : IRepository
     {
         throw new System.NotImplementedException();
     }
-
     public bool CarInStore(int id)
     {
         if (GetCarById(id) != null)
@@ -62,7 +63,6 @@ public class Repository : IRepository
         }
         return false;
     }
-
     public Car GetCarById(int id)
     {
         Car selectedCar = _cars.Find(x => x.Id == id);
@@ -74,6 +74,23 @@ public class Repository : IRepository
     {
         return DAL.Stream.ReadAllCars();
     }
+    public void ReserveCar(int carId, int customerId)
+    {
+        Customer customer = GetCustomerById(customerId);
+        Car car = GetCarById(carId);
+        car.ReservedToId = customerId;
+        // Only call when renting 
+        // DAL.Stream.UpdateCustomer(customer);
+        DAL.Stream.UpdateCar(car);
+    }
+    public void RentCar(int carId, int customerId)
+    {
+        Customer customer = GetCustomerById(customerId);
+        Car car = GetCarById(carId);
+        customer.RentedCarId = carId;
+        DAL.Stream.UpdateCustomer(customer);
+        //TODO: Reserve to customer id
+    }
     #endregion
 
     #region Customer
@@ -84,14 +101,12 @@ public class Repository : IRepository
     static private List<Customer> CreateAllCustomers()
     {
         List<Customer> customers = new List<Customer>();
-        List<string[]> arrayList = new(DAL.Stream.RealAllCustomers());
+        List<string[]> arrayList = new(DAL.Stream.ReadAllCustomers());
         foreach (string[] arr in arrayList)
         {
             if (string.IsNullOrEmpty(arr[3]))
             {
-                customers.Add(new Customer(arr[1],
-                        Convert.ToInt32(arr[0]),
-                        Convert.ToInt32(arr[2])));
+                customers.Add(new Customer(arr[0], Convert.ToInt32(arr[1]),Convert.ToInt32(arr[2])));
             }
             else
                 customers.Add(new Customer(arr[0],
@@ -101,18 +116,17 @@ public class Repository : IRepository
         }
         return customers;
     }
-
     public Customer CreateCustomer(string name, int age)
     {
         Customer customer = new(name, _customers.Count + 1, age);
-        DAL.Stream.SaveCustomers(customer);
+        DAL.Stream.SaveCustomer(customer);
         _customers.Add(customer);
 
         return customer;
     }
     public Customer GetCustomerById(int id)
     {
-        throw new System.NotImplementedException();
+        return _customers.Find(c => c.Id == id);
     }
     public List<Customer> GetAllCustomers()
     {
@@ -120,13 +134,16 @@ public class Repository : IRepository
     }
     public void UpdateCustomer()
     {
-
-        throw new System.NotImplementedException();
-
     }
     public void DisableCustomer()
     {
         throw new System.NotImplementedException();
+    }
+    public bool DoesCustomerExist(int id)
+    {
+        if (_customers.Find(c => c.Id == id) != null)
+            return true;
+        return false;
     }
     #endregion
 }

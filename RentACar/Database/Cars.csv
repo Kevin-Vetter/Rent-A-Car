@@ -1,4 +1,5 @@
-1;Ford;Focus;Red;500;9851;False;8/10/2024
-2;Fiat;500;Yellow;1;299999;True;1/1/2001
-2;Ford;Mach-E;Blue;590;54900;True;1/1/2001
-3;b;m;c;345;87;True;1/1/2001
+2;Fiat;500;Yellow;1;299999;True;1/1/2001;0
+3;Ford;Mach-E;Blue;590;54900;True;1/1/2001;0
+5;b;m;c;345;87;True;1/1/2001;0
+4;Brand;Model;Color;435;654;True;01/01/2001;0
+1;Ford;Focus;Red;500;9851;False;08/10/2024;1

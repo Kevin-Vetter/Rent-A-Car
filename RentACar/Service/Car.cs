@@ -14,7 +14,7 @@ public class Car
     public DateTime ReturnDate { get; set; }
     public int ReservedToId { get; set; }
 
-    public Car(int id, string brand, string model, string color, int price, int km, bool home, DateTime returnDate)
+    public Car(int id, string brand, string model, string color, int price, int km, bool home, DateTime returnDate, int reservedToId)
     {
         Id = id;
         Brand = brand;
@@ -24,6 +24,9 @@ public class Car
         Km = km;
         Home = home;
         ReturnDate = Convert.ToDateTime(returnDate.ToShortDateString());
+        ReservedToId = reservedToId;
     }
 
 }
+
+//TODO: set reserved id to 0 after reserved

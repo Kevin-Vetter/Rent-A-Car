@@ -8,8 +8,8 @@ namespace RentACar.DAL
 {
     public class Stream
     {
-        private static string _carPath = @"C:\Users\kevin\source\repos\RentACar\RentACar\Database\Cars.csv";
-        private static string _customerPath = @"C:\Users\Kevin\source\repos\RentACar\RentACar\Database\Customers.csv";
+        private static string _carPath = @"C:\Users\kevin\source\repos\Rent-A-Car\RentACar\Database\Cars.csv";
+        private static string _customerPath = @"C:\Users\Kevin\source\repos\Rent-A-Car\RentACar\Database\Customers.csv";
 
         static public void SaveCar(Car car)
         {
@@ -24,7 +24,8 @@ namespace RentACar.DAL
                     $"{car.Home};" +
                     $"{car.ReturnDate.Day}/" +
                     $"{car.ReturnDate.Month}/" +
-                    $"{car.ReturnDate.Year}");
+                    $"{car.ReturnDate.Year};" +
+                    $"{car.ReservedToId}");
                 //TODO: ReservedToId
             }
         }
@@ -35,24 +36,38 @@ namespace RentACar.DAL
             {
                 foreach (string[] arr in cars)
                 {
-                    //0-7
-                    for (int i = 0; i < arr.Length; i++)
-                    {
-                        writer.Write($"{arr[i]};");
-                    }
+                    writer.WriteLine($"" +
+                    $"{arr[0]};" +
+                    $"{arr[1]};" +
+                    $"{arr[2]};" +
+                    $"{arr[3]};" +
+                    $"{arr[4]};" +
+                    $"{arr[5]};" +
+                    $"{arr[6]};" +
+                    $"{arr[7]};" +
+                    $"{arr[8]}");
                 }
             }
         }
-        static public void UpdateCar(string[] car)
+        static public void UpdateCar(Car car)
         {
-            using (StreamReader reader = new StreamReader(_carPath))
+            List<string[]> cars = ReadAllCars();
+            cars.Remove(cars.Find(c => c[0] == car.Id.ToString()));
+            List<string> list = new();
+            if (car.ReservedToId != null)
             {
-                //TODO: Finish UpdateCar (Return)
-                List<string[]> cars = ReadAllCars();
-                cars.Remove(cars.Find(c => c[0] == car[0]));
-                cars.Add(car);
-                SaveAllCars(cars);
+                list.Add(car.Id.ToString());
+                list.Add(car.Brand);
+                list.Add(car.Model);
+                list.Add(car.Color);
+                list.Add(car.Price.ToString());
+                list.Add(car.Km.ToString());
+                list.Add(car.Home.ToString());
+                list.Add(car.ReturnDate.ToShortDateString());
+                list.Add(car.ReservedToId.ToString());
             }
+            cars.Add(list.ToArray());
+            SaveAllCars(cars);
         }
 
         static public List<string[]> ReadAllCars()
@@ -72,27 +87,71 @@ namespace RentACar.DAL
             }
         }
 
-        //possibly useless
-        static public void LoadCar(int id)
+        static public void UpdateCustomer(Customer customer)
         {
-            throw new System.NotImplementedException();
-        }
-
-
-
-
-        static public void SaveCustomers(Customer customer)
-        {
-            using (TextWriter writer = new StreamWriter(_customerPath, true))
+            List<string[]> customers = ReadAllCustomers();
+            customers.Remove(customers.Find(c => c[1] == customer.Id.ToString()));
+            List<string> list = new();
+            if (customer.RentedCarId != null)
             {
-                writer.Write($"{customer.Name};");
-                writer.Write($"{customer.Id};");
-                writer.Write($"{customer.Age};");
-                writer.Write($"{customer.RentedCarId}");
+                list.Add(customer.Name);
+                list.Add(customer.Id.ToString());
+                list.Add(customer.Age.ToString());
+                list.Add(customer.RentedCarId.ToString());
+            }
+            //THIS IS FOR IF UPDATE CUSTOMER BREAKS X(
+            //else
+            //{
+            //    list.Add(customer.Name);
+            //    list.Add(customer.Id.ToString());
+            //    list.Add(customer.Age.ToString());
+            //}
+
+            customers.Add(list.ToArray());
+            SaveAllCustomers(customers);
+        }
+        static public void SaveAllCustomers(List<string[]> customers)
+        {
+            using (TextWriter writer = new StreamWriter(_customerPath))
+            {
+                foreach (string[] customer in customers)
+                    if (customer[3] != null || customer[3] != "0")
+                    {
+                        writer.Write($"{customer[0]};");
+                        writer.Write($"{customer[1]};");
+                        writer.Write($"{customer[2]};");
+                        writer.Write($"{customer[3]};");
+                    }
+                    else
+                    {
+                        writer.Write($"{customer[0]};");
+                        writer.Write($"{customer[1]};");
+                        writer.Write($"{customer[2]};");
+                    }
             }
         }
 
-        static public List<string[]> RealAllCustomers()
+        static public void SaveCustomer(Customer customer)
+        {
+            using (TextWriter writer = new StreamWriter(_customerPath, true))
+            {
+                if (customer.RentedCarId != null)
+                {
+                    writer.Write($"{customer.Name};");
+                    writer.Write($"{customer.Id};");
+                    writer.Write($"{customer.Age};");
+                    writer.Write($"{customer.RentedCarId}");
+                }
+                else
+                {
+                    writer.Write($"{customer.Name};");
+                    writer.Write($"{customer.Id};");
+                    writer.Write($"{customer.Age};");
+                }
+            }
+        }
+
+        static public List<string[]> ReadAllCustomers()
         {
             using (StreamReader reader = new StreamReader(_customerPath))
             {
