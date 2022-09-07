@@ -7,7 +7,7 @@ public interface IRepository
 {
 
     #region Car stuff
-    /// <summary>
+        /// <summary>
     /// Rents a car to a customer
     /// </summary>
     /// <param name="carId"></param>

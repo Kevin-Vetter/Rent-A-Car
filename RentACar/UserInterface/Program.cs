@@ -13,7 +13,7 @@ public class Program
 {
     static void Main()
     {
-        //TODO: Summary all over the place, thew new stfu, test (TEST ON FINES!!!! [BRILLIANT])? X(
+        //TODO: test (TEST ON FINES?)  o7
         Menu();
         Console.Clear();
         Main();

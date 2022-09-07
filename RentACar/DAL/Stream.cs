@@ -11,9 +11,9 @@ namespace RentACar.DAL
 {
     public class Stream
     {
-        private static readonly string _carPath = @"C:\Users\kevin\source\repos\Rent-A-Car\RentACar\Database\Cars.csv";
-        private static readonly string _customerPath = @"C:\Users\Kevin\source\repos\Rent-A-Car\RentACar\Database\Customers.csv";
-        private static readonly string _booksPath = @"C:\Users\Kevin\source\repos\Rent-A-Car\RentACar\Database\Books.csv";
+        private static readonly string _carPath = @"C:\Users\kevin\source\repos\RentACar\RentACar\Database\Cars.csv";
+        private static readonly string _customerPath = @"C:\Users\Kevin\source\repos\RentACar\RentACar\Database\Customers.csv";
+        private static readonly string _booksPath = @"C:\Users\Kevin\source\repos\RentACar\RentACar\Database\Books.csv";
 
         static public void SaveCar(Car car)
         {
@@ -30,7 +30,6 @@ namespace RentACar.DAL
                     $"{car.ReturnDate.Month}/" +
                     $"{car.ReturnDate.Year};" +
                     $"{car.ReservedToId}");
-                //TODO: ReservedToId
             }
         }
         static public void SaveAllCars(List<string[]> cars)
@@ -76,7 +75,6 @@ namespace RentACar.DAL
         {
             using (StreamReader reader = new StreamReader(_carPath))
             {
-                //TODO: ReservedToId
                 List<string[]> cars = new List<string[]>();
                 while (!reader.EndOfStream)
                 {

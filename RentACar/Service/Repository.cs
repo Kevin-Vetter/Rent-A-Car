@@ -8,6 +8,10 @@ public class Repository : IRepository
     #region Car 
     private List<Car> _cars = new(CreateAllCars());
 
+    /// <summary>
+    /// Creates all cars from file cars.csv
+    /// </summary>
+    /// <returns>list of said cars</returns>
     static private List<Car> CreateAllCars()
     {
         List<Car> cars = new List<Car>();
@@ -70,14 +74,12 @@ public class Repository : IRepository
         Customer customer = GetCustomerById(customerId);
         Car car = GetCarById(carId);
         car.ReservedToId = customerId;
-        // Only call when renting 
-        // DAL.Stream.UpdateCustomer(customer);
         DAL.Stream.UpdateCar(car);
     }
     public void RentCar(int carId, int customerId)
     {
         Car car = GetCarById(carId);
-        if (carId == customerId)
+        if (/*carId == customerId &&*/ car.ReservedToId == customerId)
         {
             Customer customer = GetCustomerById(customerId);
             customer.RentedCarId = carId;
@@ -149,6 +151,7 @@ public class Repository : IRepository
     }
     #endregion
 
+    #region Books
     public int ViewBooks()
     {
         return DAL.Stream.GetBooks();
@@ -157,4 +160,5 @@ public class Repository : IRepository
     {
         DAL.Stream.ExtraPay(ammount);
     }
+    #endregion
 }
